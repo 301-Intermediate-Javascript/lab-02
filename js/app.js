@@ -1,12 +1,16 @@
 'use strict';
 
-const images = [];
+const imagesArray = [];
+const keywordArray = [];
 
 function ImageRender(image_url, keyword, title, description) {
     this.image_url = image_url;
     this.keyword = keyword;
     this.title = title;
     this.description = description;
+    if(!keywordArray.includes(this.keyword)){
+        keywordArray.push(this.keyword)
+    }
 }
 
 ImageRender.prototype.renderImageToPage = function() {
@@ -19,19 +23,46 @@ ImageRender.prototype.renderImageToPage = function() {
   $('ul').append($imageClone)  
 }
 
-ImageRender.prototype.renderKeywordFilter = function() {
-    if($('select').val() === this.keyword){
+function renderKeywordFilter() {
+        // console.log(keywordArray);
         const $optionClone = $('option:first-child').clone();
-        $optionClone.text(this.keyword);
-        $optionClone.attr('value', this.keyword);
+        $optionClone.text('display all');
+        $optionClone.attr('value', 'display-all');
         $('select').append($optionClone);
+        keywordArray.forEach((a, index) => {
+            const $optionClone2 = $('option:first-child').clone();
+            $optionClone2.text(keywordArray[index]);
+            // console.log($optionClone.text(keywordArray[index]));
+            $optionClone2.attr('value', keywordArray[index]);
+            // console.log($optionClone);
+            $('select').append($optionClone2);
+            // console.log($optionClone);
+
+        })
+
+        
     }
-}
+    // }else {
+    //     $optionClone.remove();
+        
+    // }
+    
+
+    // console.log($('select').children('option').val())
 ImageRender.prototype.filter = function(){
 $('select').on('change', function(){
-   if($(this).children("option:selected").val() !== 'default'){
+   if($('select').children('option:selected').val() !== 'default'){
        $('li').css('display', 'none'); // hides all images
-        $(`#${$(this).children("option:selected").val()}`).css('display', '');
+       console.log(`#${$(this).val()}`)
+        $(`#${$('select').children('option:selected').val()}`).each(function () {
+
+            $(`#${$('select').children('option:selected').val()}`).css('display', '');
+        })
+
+
+   }
+   if($(this).children("option:selected").val() === 'display-all'){
+    $('li').css('display', '');
    }
 })}
 
@@ -41,8 +72,9 @@ $.get('data/page-1.json', function(Data){
       const newImage = new ImageRender(thing.image_url, thing.keyword, thing.title, thing.description);
     //   console.log(newImage);
       newImage.renderImageToPage();
-      newImage.renderKeywordFilter();
       newImage.filter();
-      images.push(newImage);
+      imagesArray.push(newImage);
     });
+renderKeywordFilter();
+
   });
