@@ -1,0 +1,25 @@
+* {
+    /* outline: red 2px dotted; */
+    box-sizing: border-box;
+}
+
+li {
+    float: left;
+    height: 400px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    padding: 0 5px;
+    border-radius: 30px;
+}
+
+ul {
+    width: 100%;
+}
+
+body {
+    width: 1200px;
+    margin: 0 auto;
+}
