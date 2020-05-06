@@ -16,6 +16,7 @@ function ImageRender(image_url, keyword, title, description) {
 ImageRender.prototype.renderImageToPage = function() {
   const $imageClone = $('li:first-child').clone();
   $imageClone.attr('id', this.keyword);
+  $imageClone.attr('class', this.keyword);
   $imageClone.find('h2').text(this.title);
   $imageClone.find('p').text(this.description);
   $imageClone.find('img').attr('src', this.image_url);
@@ -53,10 +54,9 @@ ImageRender.prototype.filter = function(){
 $('select').on('change', function(){
    if($('select').children('option:selected').val() !== 'default'){
        $('li').css('display', 'none'); // hides all images
-       console.log(`#${$(this).val()}`)
         $(`#${$('select').children('option:selected').val()}`).each(function () {
 
-            $(`#${$('select').children('option:selected').val()}`).css('display', '');
+            $(`.${$('select').children('option:selected').val()}`).css('display', '');
         })
 
 
