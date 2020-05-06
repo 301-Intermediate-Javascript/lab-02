@@ -1,0 +1,10 @@
+img, p, h2 {
+    width: 200px;
+}
+ul {
+    list-style-type: none;
+}
+
+li:first-child {
+    display: none;
+}
