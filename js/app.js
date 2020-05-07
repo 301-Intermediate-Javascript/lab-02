@@ -2,6 +2,7 @@
 
 const imagesArray = [];
 const keywordArray = [];
+const keywordArray2 = [];
 const imagesArray2 = [];
 
 function ImageRender(image_url, keyword, title, description, page) {
@@ -10,9 +11,11 @@ function ImageRender(image_url, keyword, title, description, page) {
   this.title = title;
   this.description = description;
   this.page = page;
-  if (!keywordArray.includes(this.keyword)) {
+  if (!keywordArray.includes(this.keyword) && this.page === '1') {
     keywordArray.push(this.keyword)
-  }
+}else if(!keywordArray2.includes(this.keyword) && this.page === '2'){
+    keywordArray2.push(this.keyword)
+}
 }
 
 ImageRender.prototype.renderImageToPage = function () {
@@ -26,46 +29,29 @@ ImageRender.prototype.renderImageToPage = function () {
   $imageClone.find('img').attr('src', this.image_url);
   $imageClone.find('img').attr('alt', this.keyword);
   $('ul').append($imageClone);
-  // $imageClone.hide();
-  // if (imagesArray.includes()) {
-  //   console.log('pest');
-  //   $imageClone.show();
-  // }
 };
 
-function renderKeywordFilter() {
+function renderKeywordFilter(array, select, firstOption) {
   // console.log(keywordArray);
-  const $optionClone = $('option:first-child').clone();
+  const $optionClone = $(firstOption).clone();
   $optionClone.text('display all');
   $optionClone.attr('value', 'display-all');
-  $('select').append($optionClone);
-  keywordArray.forEach((a, index) => {
-    const $optionClone2 = $('option:first-child').clone();
-    $optionClone2.text(keywordArray[index]);
-    // console.log($optionClone.text(keywordArray[index]));
-    $optionClone2.attr('value', keywordArray[index]);
-    // console.log($optionClone);
-    $('select').append($optionClone2);
-    // console.log($optionClone);
-
+  $(select).append($optionClone);
+  array.forEach((a, index) => {
+    const $optionClone2 = $(firstOption).clone();
+    $optionClone2.text(array[index]);
+    $optionClone2.attr('value', array[index]);
+    $(select).append($optionClone2);
   })
-
-
 }
-// }else {
-//     $optionClone.remove();
 
-// }
-
-
-// console.log($('select').children('option').val())
-ImageRender.prototype.filter = function () {
-  $('select').on('change', function () {
-    if ($('select').children('option:selected').val() !== 'default') {
+ImageRender.prototype.filter = function (select) {
+  $(select).on('change', function () {
+    if ($(select).children('option:selected').val() !== 'default') {
       $('li').css('display', 'none'); // hides all images
-      $(`#${$('select').children('option:selected').val()}`).each(function () {
+      $(`#${$(select).children('option:selected').val()}`).each(function () {
 
-        $(`.${$('select').children('option:selected').val()}`).css('display', '');
+        $(`.${$(select).children('option:selected').val()}`).css('display', '');
       })
 
 
@@ -82,10 +68,10 @@ $.get('data/page-1.json', function (Data) {
     const newImage = new ImageRender(thing.image_url, thing.keyword, thing.title, thing.description, '1');
     //   console.log(newImage);
     newImage.renderImageToPage();
-    newImage.filter();
+    newImage.filter('#firstSelect');
     imagesArray.push(newImage);
   });
-  renderKeywordFilter();
+  renderKeywordFilter(keywordArray, '#firstSelect', '#first');
 
 });
 
@@ -96,12 +82,14 @@ $.get('data/page-2.json', function (Data) {
 
     imagesArray2.push(newImage);
     newImage.renderImageToPage();
-    newImage.filter();
+    newImage.filter('#secondSelect');
   });
-  renderKeywordFilter();
-
+  renderKeywordFilter(keywordArray2, '#secondSelect', '#second');
 });
 
 $('#page2').on('click', function() {
   $('.1').hide();
+  $('header :nth-child(3)').hide();
+  $('header :nth-child(4)').show();
+
 });

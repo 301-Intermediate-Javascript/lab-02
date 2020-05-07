@@ -8,3 +8,6 @@ ul {
 li:first-child {
     display: none;
 }
+header :nth-child(4) {
+    display: none;
+}
