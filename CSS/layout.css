@@ -3,8 +3,13 @@
     box-sizing: border-box;
 }
 
+ul {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
 li {
-    float: left;
+    /* float: left; */
     height: 400px;
     margin-right: 30px;
     margin-bottom: 30px;
@@ -13,6 +18,7 @@ li {
     border-style: solid;
     padding: 0 5px;
     border-radius: 30px;
+    width: 250px;
 }
 
 ul {
