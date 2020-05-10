@@ -5,9 +5,10 @@ ul {
     list-style-type: none;
 }
 
-li:first-child {
+#sort2 {
     display: none;
 }
-header :nth-child(4) {
+
+#secondSelect {
     display: none;
 }
